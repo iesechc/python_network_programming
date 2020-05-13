@@ -1,0 +1,30 @@
+import getpass
+import sys
+import telnetlib
+
+#Configuring loopback interfaces
+#Python programming for network engineers
+
+HOST = "192.168.17.130"
+user = raw_input("Enter your remote account: ")
+password = getpass.getpass()
+
+tn = telnetlib.Telnet(HOST)
+
+tn.read_until("Username: ")
+tn.write(user + "\n")
+if password:
+    tn.read_until("Password: ")
+    tn.write(password + "\n")
+
+tn.write("enable\n")
+tn.write("cisco\n")
+tn.write("configure terminal\n")
+tn.write("interface loopback\n")
+tn.write("ip address 1.1.1.1 255.255.255.255\n")
+tn.write("end\n")
+tn.write("show ip interface brief\n")
+tn.write("exit\n")
+
+
+print tn.read_all()
